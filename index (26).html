@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVANZA · Presentación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0C1A14;
+    --green:#0F7A4D;
+    --green-deep:#0B3D2A;
+    --amber:#E8B84B;
+    --amber-deep:#C9982F;
+    --paper:#F7F5EF;
+    --paper-2:#EFEBE0;
+    --muted:#5C6B64;
+    --line:#D8D2C4;
+    --red:#B4452F;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--ink);
+    color:var(--ink);
+    font-family:"DM Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+
+  /* ---------- Deck shell ---------- */
+  .deck{position:fixed;inset:0;overflow:hidden}
+  .slide{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(28px,5vw,80px);
+    opacity:0;visibility:hidden;
+    transform:translateX(40px);
+    transition:opacity .5s ease, transform .5s ease, visibility .5s;
+    overflow-y:auto;
+  }
+  .slide.active{opacity:1;visibility:visible;transform:none}
+  .slide-inner{width:100%;max-width:var(--maxw);margin:0 auto}
+
+  /* paper slides */
+  .slide.paper{background:var(--paper)}
+  .slide.paper::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(15,122,77,.06), transparent 55%),
+      radial-gradient(80% 70% at 0% 100%, rgba(232,184,75,.07), transparent 60%);
+  }
+  /* dark slides */
+  .slide.dark{background:var(--ink);color:var(--paper)}
+  .slide.dark::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(90% 80% at 85% 15%, rgba(15,122,77,.22), transparent 55%),
+      radial-gradient(70% 60% at 10% 90%, rgba(232,184,75,.10), transparent 60%);
+  }
+
+  /* ---------- Type ---------- */
+  .eyebrow{
+    font-family:"DM Mono",monospace;
+    font-size:clamp(11px,1.1vw,13px);
+    letter-spacing:.28em;text-transform:uppercase;
+    color:var(--green);display:flex;align-items:center;gap:14px;
+  }
+  .dark .eyebrow{color:var(--amber)}
+  .eyebrow::before{content:"";width:34px;height:1px;background:currentColor;opacity:.6}
+  h1.display{
+    font-family:"Cormorant Garamond",serif;
+    font-weight:600;line-height:.98;letter-spacing:-.01em;
+    font-size:clamp(40px,7vw,92px);
+  }
+  h2.display{
+    font-family:"Cormorant Garamond",serif;
+    font-weight:600;line-height:1.0;letter-spacing:-.01em;
+    font-size:clamp(32px,4.6vw,60px);
+    margin-top:14px;
+  }
+  .lede{
+    font-size:clamp(15px,1.5vw,19px);line-height:1.5;color:var(--muted);
+    max-width:62ch;margin-top:18px;
+  }
+  .dark .lede{color:rgba(247,245,239,.72)}
+  .mono{font-family:"DM Mono",monospace}
+
+  /* ---------- Cover ---------- */
+  .wordmark{
+    font-family:"Cormorant Garamond",serif;font-weight:700;
+    font-size:clamp(64px,13vw,180px);line-height:.86;letter-spacing:.02em;
+    color:var(--paper);
+  }
+  .wordmark .dot{color:var(--amber)}
+  .cover-sub{
+    font-family:"DM Mono",monospace;letter-spacing:.42em;text-transform:uppercase;
+    font-size:clamp(12px,1.4vw,16px);color:var(--amber);margin-top:22px;
+    padding-left:.42em;
+  }
+  .cover-meta{
+    margin-top:clamp(40px,7vh,90px);display:flex;flex-wrap:wrap;gap:14px 40px;
+    border-top:1px solid rgba(247,245,239,.16);padding-top:26px;
+  }
+  .cover-meta div{min-width:120px}
+  .cover-meta .k{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,245,239,.5)}
+  .cover-meta .v{font-size:16px;color:var(--paper);margin-top:6px;font-weight:500}
+
+  /* ---------- Competitor table ---------- */
+  .table-wrap{margin-top:clamp(20px,3vh,34px);overflow-x:auto;border-radius:14px}
+  table.cmp{width:100%;border-collapse:separate;border-spacing:0;min-width:760px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 16px;text-align:left;font-size:14px;border-bottom:1px solid var(--line);vertical-align:middle}
+  table.cmp thead th{
+    background:var(--green-deep);color:var(--paper);
+    font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  }
+  table.cmp tbody tr:last-child td{border-bottom:none}
+  .co{font-weight:700;font-size:15px}
+  .co .rank{font-family:"DM Mono",monospace;color:var(--green);font-size:12px;margin-right:8px}
+  .co small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:3px;letter-spacing:.01em}
+  td.rate{font-family:"DM Mono",monospace;font-weight:500;color:var(--amber-deep);white-space:nowrap}
+  .pill{display:inline-block;font-family:"DM Mono",monospace;font-size:11px;padding:3px 8px;border-radius:999px;background:var(--paper-2);color:var(--muted);white-space:nowrap}
+  tr.avanza td{background:#0C1A14;color:var(--paper);border-bottom:1px solid #14251c}
+  tr.avanza .co{color:var(--paper)}
+  tr.avanza .co .rank{color:var(--amber)}
+  tr.avanza td.rate{color:var(--amber)}
+  tr.avanza .pill{background:rgba(232,184,75,.14);color:var(--amber)}
+  .tnote{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);margin-top:12px;letter-spacing:.02em}
+
+  .callout{
+    margin-top:clamp(18px,2.6vh,28px);display:flex;gap:16px;align-items:flex-start;
+    background:linear-gradient(180deg,#fff,#fbf9f3);border:1px solid var(--line);
+    border-left:4px solid var(--amber);border-radius:12px;padding:18px 20px;
+  }
+  .callout .ico{flex:0 0 auto;width:30px;height:30px;color:var(--green)}
+  .callout p{font-size:15px;line-height:1.5}
+  .callout strong{color:var(--green-deep)}
+
+  /* ---------- Legal compare ---------- */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:clamp(18px,2.6vh,30px)}
+  .card{border-radius:16px;padding:22px;border:1px solid var(--line);background:#fff;position:relative;overflow:hidden}
+  .card.bank{background:linear-gradient(180deg,#fbfaf6,#f3efe6)}
+  .card.us{background:var(--ink);color:var(--paper);border-color:#16271e}
+  .card .tag{
+    font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border-radius:999px;font-weight:500;
+  }
+  .card.bank .tag{background:rgba(180,69,47,.1);color:var(--red)}
+  .card.us .tag{background:rgba(232,184,75,.16);color:var(--amber)}
+  .card h3{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(24px,2.7vw,32px);line-height:1.05;margin:14px 0 4px}
+  .card .role{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .card.us .role{color:rgba(247,245,239,.6)}
+  .clist{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .clist li{display:flex;gap:11px;font-size:14px;line-height:1.4}
+  .clist .m{flex:0 0 auto;width:18px;height:18px;margin-top:1px}
+  .x{color:var(--red)}
+  .ok{color:var(--green)}
+  .card.us .ok{color:var(--amber)}
+  .clist b{font-weight:600}
+
+  /* flow */
+  .flow-title{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);margin:clamp(20px,3vh,30px) 0 14px;display:flex;align-items:center;gap:12px}
+  .flow-title::after{content:"";flex:1;height:1px;background:var(--line)}
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+  .step{
+    flex:1 1 0;min-width:130px;background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:13px 14px;position:relative;
+  }
+  .step .n{font-family:"DM Mono",monospace;font-size:11px;color:var(--amber-deep)}
+  .step .t{font-weight:600;font-size:13.5px;margin-top:5px;line-height:1.25}
+  .step .d{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .arrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:26px;color:var(--green)}
+  .arrow svg{width:16px;height:16px}
+  .step.win{background:var(--green-deep);border-color:var(--green-deep)}
+  .step.win .t,.step.win .d{color:var(--paper)}
+  .step.win .n{color:var(--amber)}
+  .step.win .d{color:rgba(247,245,239,.75)}
+  .default-flag{
+    margin-top:14px;font-size:13px;color:var(--muted);display:flex;gap:9px;align-items:center;
+  }
+  .default-flag .lock{width:18px;height:18px;color:var(--green)}
+  .default-flag b{color:var(--green-deep)}
+
+  /* ---------- Capital slide ---------- */
+  .cap-hero{margin-top:clamp(16px,2.4vh,26px);display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+  .cap-hero .big{font-family:"DM Mono",monospace;font-weight:500;font-size:clamp(52px,9.5vw,108px);color:var(--amber);line-height:.86;letter-spacing:-.03em}
+  .cap-hero .approx{font-family:"Cormorant Garamond",serif;font-size:clamp(30px,5vw,56px);color:rgba(247,245,239,.55);font-weight:500;line-height:.9}
+  .cap-hero .lab{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(247,245,239,.6);align-self:flex-end;padding-bottom:8px}
+
+  .uof{margin-top:clamp(18px,2.8vh,30px);display:flex;flex-direction:column}
+  .uof-row{display:grid;grid-template-columns:minmax(150px,1.05fr) 1.9fr auto;align-items:center;gap:6px 18px;
+    border-top:1px solid rgba(247,245,239,.13);padding:12px 0}
+  .uof-row:first-child{border-top:none}
+  .uof-row .name{font-weight:600;font-size:14.5px;color:var(--paper)}
+  .uof-row .name small{display:block;font-family:"DM Mono",monospace;font-weight:400;color:rgba(247,245,239,.5);font-size:11.5px;margin-top:3px;letter-spacing:.01em}
+  .uof-bar{height:9px;border-radius:999px;background:rgba(247,245,239,.09);overflow:hidden}
+  .uof-bar span{display:block;height:100%;border-radius:999px}
+  .uof-amt{font-family:"DM Mono",monospace;color:var(--paper);font-size:17px;text-align:right;white-space:nowrap}
+  .uof-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding-top:14px;border-top:1.5px solid rgba(232,184,75,.4)}
+  .uof-total .l{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+  .uof-total .v{font-family:"DM Mono",monospace;font-size:clamp(20px,2.4vw,26px);color:var(--amber)}
+
+  .src-title{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin:clamp(18px,2.6vh,28px) 0 12px;display:flex;align-items:center;gap:12px}
+  .src-title::after{content:"";flex:1;height:1px;background:rgba(247,245,239,.16)}
+  .tranches{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .tcard{border:1px solid rgba(247,245,239,.16);border-radius:14px;padding:18px 20px;background:rgba(247,245,239,.035)}
+  .tcard.senior{border-color:rgba(232,184,75,.4);background:rgba(232,184,75,.06)}
+  .tcard .th{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .tcard .tname{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,245,239,.7)}
+  .tcard.senior .tname{color:var(--amber)}
+  .tcard .pct{font-family:"DM Mono",monospace;font-size:13px;color:rgba(247,245,239,.6)}
+  .tcard.senior .pct{color:var(--amber)}
+  .tcard h4{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(21px,2.4vw,27px);line-height:1.05;margin:10px 0 2px;color:var(--paper)}
+  .tcard .amt{font-family:"DM Mono",monospace;font-size:clamp(24px,3vw,30px);color:var(--paper);margin:6px 0 8px}
+  .tcard.senior .amt{color:var(--amber)}
+  .tcard .desc{font-size:13px;line-height:1.45;color:rgba(247,245,239,.7)}
+  .dark .tnote{color:rgba(247,245,239,.5)}
+  .cap-key{margin-top:clamp(16px,2.4vh,24px);display:flex;gap:13px;align-items:flex-start;
+    border:1px solid rgba(232,184,75,.3);border-left:4px solid var(--amber);border-radius:12px;
+    padding:16px 18px;background:rgba(232,184,75,.05)}
+  .cap-key .lock{flex:0 0 auto;width:24px;height:24px;color:var(--amber);margin-top:1px}
+  .cap-key p{font-size:14.5px;line-height:1.5;color:rgba(247,245,239,.85)}
+  .cap-key b{color:var(--amber)}
+
+  @media (max-width:720px){
+    .tranches{grid-template-columns:1fr}
+    .uof-row{grid-template-columns:1fr auto;gap:4px 14px}
+    .uof-bar{grid-column:1 / -1;order:3;margin-top:4px}
+  }
+
+  /* ---------- Cadence slide ---------- */
+  .month1{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3.5vw,38px);align-items:center;
+    margin-top:clamp(18px,2.8vh,30px);background:linear-gradient(180deg,#fff,#fbf9f3);
+    border:1px solid var(--line);border-left:4px solid var(--green);border-radius:14px;padding:22px 24px}
+  .month1 .m1-num{font-family:"DM Mono",monospace;font-weight:500;font-size:clamp(46px,8vw,86px);color:var(--green-deep);line-height:.84;letter-spacing:-.02em}
+  .month1 .m1-lab{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-top:11px;line-height:1.4}
+  .m1-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+  .m1-list li{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;border-bottom:1px dotted var(--line);padding-bottom:7px}
+  .m1-list .v{font-family:"DM Mono",monospace;color:var(--green-deep);white-space:nowrap}
+
+  .qstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:clamp(14px,2.2vh,22px)}
+  .qcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 15px 13px}
+  .qcard .q{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--green)}
+  .qcard .qamt{font-family:"DM Mono",monospace;font-size:clamp(20px,2.4vw,26px);color:var(--amber-deep);margin:6px 0 8px}
+  .qcard .qd{font-size:12px;line-height:1.35;color:var(--muted);min-height:50px}
+  .qcard .qcum{font-family:"DM Mono",monospace;font-size:11px;border-top:1px solid var(--line);padding-top:8px;margin-top:6px;color:var(--muted)}
+  .qcard .qcum b{color:var(--green-deep)}
+
+  .buildbar{display:flex;height:13px;border-radius:999px;overflow:hidden;margin-top:16px;border:1px solid var(--line)}
+  .buildbar span{display:block;height:100%;border-right:2px solid var(--paper)}
+  .buildbar span:last-child{border-right:none}
+  .buildcap{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);margin-top:7px;letter-spacing:.03em;display:flex;justify-content:space-between}
+
+  .cad-key{margin-top:clamp(16px,2.4vh,24px);display:flex;gap:13px;align-items:flex-start;
+    background:var(--ink);border-radius:12px;padding:17px 19px}
+  .cad-key .ico{flex:0 0 auto;width:24px;height:24px;color:var(--amber);margin-top:1px}
+  .cad-key p{font-size:14px;line-height:1.5;color:rgba(247,245,239,.85)}
+  .cad-key b{color:var(--amber)}
+
+  @media (max-width:720px){
+    .month1{grid-template-columns:1fr}
+    .m1-list{grid-template-columns:1fr}
+    .qstrip{grid-template-columns:1fr 1fr}
+    .qcard .qd{min-height:0}
+  }
+
+  /* ---------- Capital structure (pyramid) slide ---------- */
+  .capstack{display:grid;grid-template-columns:1.02fr 1fr;gap:clamp(18px,3.2vw,42px);align-items:center;margin-top:clamp(14px,2.4vh,26px)}
+  .capstack svg{width:100%;height:auto;display:block}
+  .cs-cards{display:flex;flex-direction:column;gap:13px}
+  .cs-card{border-radius:14px;padding:16px 20px;border:1px solid var(--line);background:#fff}
+  .cs-card.senior{background:linear-gradient(180deg,#fffdf6,#fbf2d9);border-color:rgba(232,184,75,.55)}
+  .cs-card.equity{background:var(--ink);border-color:#16271e;color:var(--paper)}
+  .cs-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .cs-tag{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+  .cs-card.senior .cs-tag{color:var(--amber-deep)}
+  .cs-card.equity .cs-tag{color:var(--amber)}
+  .cs-pct{font-family:"DM Mono",monospace;font-size:15px}
+  .cs-card.senior .cs-pct{color:var(--amber-deep)}
+  .cs-card.equity .cs-pct{color:var(--paper)}
+  .cs-card h4{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(20px,2.3vw,26px);line-height:1.05;margin:8px 0 2px}
+  .cs-name{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.03em;margin-bottom:10px;color:var(--muted)}
+  .cs-card.equity .cs-name{color:rgba(247,245,239,.6)}
+  .cs-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+  .cs-list li{display:flex;gap:9px;font-size:13.5px;line-height:1.4}
+  .cs-list .b{flex:0 0 auto;width:15px;height:15px;margin-top:2px}
+  .cs-card.senior .b{color:var(--amber-deep)}
+  .cs-card.equity .b{color:var(--amber)}
+  @media (max-width:760px){
+    .capstack{grid-template-columns:1fr}
+    .capstack .pyr{max-width:380px;margin:0 auto}
+  }
+
+  /* ---------- Loan-mechanics timeline ---------- */
+  .tl{position:relative;margin-top:clamp(14px,2.4vh,24px)}
+  .tl::before{content:"";position:absolute;left:21px;top:14px;bottom:16px;width:2px;
+    background:linear-gradient(180deg,var(--green) 0%, var(--amber-deep) 70%, var(--amber) 100%)}
+  .tl-row{position:relative;display:grid;grid-template-columns:44px 1fr;gap:16px;padding-bottom:clamp(10px,1.8vh,16px)}
+  .tl-row:last-child{padding-bottom:0}
+  .tl-node{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:"DM Mono",monospace;font-size:14px;background:#fff;border:2px solid var(--green);color:var(--green-deep)}
+  .tl-node.amber{border-color:var(--amber-deep);color:var(--amber-deep)}
+  .tl-node.win{background:var(--green-deep);border-color:var(--green-deep);color:#fff}
+  .tl-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 18px}
+  .tl-card.amber{border-color:rgba(232,184,75,.5);background:linear-gradient(180deg,#fffdf6,#fcf5e1)}
+  .tl-card.win{border-color:rgba(15,122,77,.4);background:linear-gradient(180deg,#fff,#f1f7f3)}
+  .tl-ph{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:3px}
+  .tl-card.amber .tl-ph{color:var(--amber-deep)}
+  .tl-card h4{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(19px,2.1vw,25px);line-height:1.08;margin-bottom:4px}
+  .tl-card p{font-size:13.5px;line-height:1.45;color:var(--muted)}
+  .tl-card p b{color:var(--ink);font-weight:600}
+  .tl-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  .tl-tag{font-family:"DM Mono",monospace;font-size:11px;padding:3px 9px;border-radius:999px;background:var(--paper-2);color:var(--green-deep);white-space:nowrap}
+  .tl-tag.amber{background:rgba(232,184,75,.18);color:var(--amber-deep)}
+  @media (max-width:720px){
+    .tl-row{grid-template-columns:38px 1fr;gap:12px}
+    .tl-node{width:38px;height:38px;font-size:12px}
+    .tl::before{left:18px}
+  }
+
+  /* ---------- Team slide ---------- */
+  .ceo-banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px;background:var(--ink);color:var(--paper);border-radius:14px;padding:15px 22px;margin-top:clamp(14px,2.2vh,24px)}
+  .ceo-banner .cb-tag{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);background:rgba(232,184,75,.14);padding:5px 11px;border-radius:999px}
+  .ceo-banner .cb-name{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(22px,2.6vw,30px)}
+  .ceo-banner .cb-cred{font-family:"DM Mono",monospace;font-size:11px;color:rgba(247,245,239,.55);letter-spacing:.06em}
+  .ceo-banner .cb-desc{font-size:13px;color:rgba(247,245,239,.8);flex:1 1 240px;line-height:1.45;min-width:200px}
+  .team-connector{width:2px;height:16px;background:var(--line);margin:0 auto}
+  .team-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+  .team-grid .role{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 14px;display:flex;flex-direction:column;gap:6px}
+  .role.crit{border-color:rgba(232,184,75,.55);background:linear-gradient(180deg,#fffdf6,#fdf6e2)}
+  .role .rtop{display:flex;justify-content:space-between;align-items:center;gap:6px}
+  .role .rstage{font-family:"DM Mono",monospace;font-size:9.5px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+  .chip{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:999px;white-space:nowrap}
+  .chip.now{background:var(--green-deep);color:#fff}
+  .chip.later{background:transparent;border:1px solid var(--amber-deep);color:var(--amber-deep)}
+  .role .ricon{width:23px;height:23px;color:var(--green);margin-top:2px}
+  .role.crit .ricon{color:var(--amber-deep)}
+  .role h4{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:17.5px;line-height:1.06}
+  .role p{font-size:12px;line-height:1.38;color:var(--muted)}
+  .team-ext{margin-top:14px;display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+  .team-ext .lbl{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .team-ext .xitem{background:var(--paper-2);border-radius:999px;padding:5px 12px;font-family:"DM Mono",monospace;font-size:12px;color:var(--ink)}
+  @media (max-width:980px){ .team-grid{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:640px){ .team-grid{grid-template-columns:repeat(2,1fr)} }
+
+  /* board advisor + costs */
+  .board-bar{display:flex;flex-wrap:wrap;align-items:center;gap:7px 18px;border:1px dashed var(--amber-deep);background:rgba(232,184,75,.07);border-radius:12px;padding:11px 20px;margin-top:clamp(12px,2vh,22px)}
+  .board-bar .bb-tag{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber-deep);font-weight:500}
+  .board-bar .bb-name{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(19px,2.2vw,25px);color:var(--ink)}
+  .board-bar .bb-cred{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .board-bar .bb-desc{font-size:12.5px;color:var(--muted);flex:1 1 230px;line-height:1.45;min-width:190px}
+  .role .rcost{font-family:"DM Mono",monospace;font-size:12.5px;color:var(--green-deep);margin-top:auto;padding-top:7px;border-top:1px solid var(--line)}
+  .role.crit .rcost{color:var(--amber-deep)}
+  .role.fin{border-color:rgba(15,122,77,.45);background:linear-gradient(180deg,#fff,#eff7f2)}
+  .role.fin .ricon{color:var(--green-deep)}
+  .rown{font-family:"DM Mono",monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--green-deep);padding:2px 7px;border-radius:999px}
+  .team-cost{display:flex;flex-wrap:wrap;gap:12px 0;align-items:center;margin-top:14px;background:var(--ink);border-radius:12px;padding:14px 4px}
+  .team-cost .tc-item{display:flex;flex-direction:column;padding:0 22px;flex:1 1 auto}
+  .team-cost .tc-item + .tc-item{border-left:1px solid rgba(247,245,239,.16)}
+  .team-cost .tc-k{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(247,245,239,.55)}
+  .team-cost .tc-v{font-family:"DM Mono",monospace;font-size:clamp(17px,2vw,23px);color:var(--amber);margin-top:4px}
+  .team-cost .tc-v small{font-size:12px;color:rgba(247,245,239,.6)}
+  @media (max-width:640px){ .team-cost .tc-item{flex-basis:100%} .team-cost .tc-item + .tc-item{border-left:none;border-top:1px solid rgba(247,245,239,.14);padding-top:10px} }
+
+  .team-grid .role{position:relative;padding-top:15px}
+  .rbar{position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0}
+  .rprio{font-family:"DM Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.03em;color:#fff;padding:2px 8px;border-radius:999px}
+  .rcover{font-family:"DM Mono",monospace;font-size:9.5px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);line-height:1.3}
+  .rcover b{color:var(--ink)}
+  .team-pl{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:clamp(8px,1.4vh,14px) 0 10px;display:flex;align-items:center;gap:12px}
+  .team-pl::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .captl{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:clamp(14px,2.2vh,22px)}
+  .captl .cstep{background:rgba(247,245,239,.04);border:1px solid rgba(247,245,239,.16);border-radius:12px;padding:15px 18px}
+  .captl .cstep.now{border-color:rgba(232,184,75,.42);background:rgba(232,184,75,.07)}
+  .captl .cn{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+  .captl .cstep h4{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(18px,2vw,24px);color:var(--paper);margin:7px 0 5px;line-height:1.06}
+  .captl .cstep p{font-size:12.5px;color:rgba(247,245,239,.72);line-height:1.45}
+  .callout.pre{border-left-color:var(--green)}
+  @media(max-width:720px){.captl{grid-template-columns:1fr}}
+
+  .snake{margin-top:clamp(10px,1.8vh,18px)}
+  .sphase{display:flex;align-items:center;gap:10px;font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin:12px 0 8px;padding:7px 13px;border-radius:8px}
+  .sphase.p0{background:rgba(15,122,77,.1);color:var(--green-deep)}
+  .sphase.p1{background:rgba(232,184,75,.16);color:var(--amber-deep)}
+  .sphase.p2{background:#0C1A14;color:var(--paper)}
+  .sphase .amt{margin-left:auto;opacity:.75;font-size:10px;letter-spacing:.05em}
+  .snake-row{display:flex;align-items:stretch;gap:9px}
+  .snake-row.rev{flex-direction:row-reverse}
+  .snode{flex:1 1 0;min-width:0;background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;display:flex;flex-direction:column;gap:4px}
+  .snode.p0{border-left:3px solid var(--green)}
+  .snode.p1{border-left:3px solid var(--amber-deep)}
+  .snode.p2{border-left:3px solid #0C1A14}
+  .snode .sn{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  .snode .st{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(15px,1.6vw,19px);line-height:1.04;color:var(--ink)}
+  .snode .sd{font-size:11px;line-height:1.34;color:var(--muted);flex:1}
+  .snode .cad{align-self:flex-start;font-family:"DM Mono",monospace;font-size:8.5px;letter-spacing:.02em;background:var(--green-deep);color:#fff;padding:2px 7px;border-radius:999px;margin-top:3px}
+  .snake-row .sarrow{flex:0 0 auto;display:flex;align-items:center;color:var(--green)}
+  .snake-row .sarrow svg{width:15px;height:15px}
+  .sdown{display:flex;padding:5px 46px}
+  .sdown.right{justify-content:flex-end}
+  .sdown.left{justify-content:flex-start}
+  .sdown svg{width:20px;height:20px;color:var(--green)}
+  @media(max-width:860px){
+    .snake-row,.snake-row.rev{flex-direction:column}
+    .snake-row .sarrow{align-self:center;transform:rotate(90deg)}
+    .sdown{justify-content:center;padding:2px 0}
+  }
+
+  .dark .m1-list li{border-bottom-color:rgba(247,245,239,.16)}
+  .dark .m1-list li > span:first-child{color:rgba(247,245,239,.82)}
+  .dark .m1-list .v{color:var(--amber)}
+
+  .rmap{margin-top:clamp(14px,2.6vh,26px)}
+  .rmap-parent{display:flex;justify-content:center}
+  .rmap-parent .pnode{background:var(--ink);color:var(--paper);border-radius:12px;padding:12px 30px;text-align:center}
+  .rmap-parent .pnode b{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(21px,2.5vw,28px)}
+  .rmap-parent .pnode small{display:block;font-family:"DM Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-top:3px}
+  .rmap-connect{display:flex;justify-content:center;padding:6px 0}
+  .rmap-connect svg{width:22px;height:22px;color:var(--line)}
+  .rmap-row{display:flex;align-items:stretch;gap:11px}
+  .pcard{flex:1 1 0;min-width:0;border-radius:14px;padding:17px 18px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:7px}
+  .pcard.now{border-color:rgba(232,184,75,.6);background:linear-gradient(180deg,#fffdf6,#fdf6e2)}
+  .pcard.next{border-color:rgba(15,122,77,.4)}
+  .pcard.later{border-style:dashed;background:#fbfaf7}
+  .pcard .ph{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .pcard.now .ph{color:var(--amber-deep)}
+  .pcard.next .ph{color:var(--green)}
+  .pcard.later .ph{color:var(--muted)}
+  .pcard .ptime{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:.05em;padding:3px 8px;border-radius:999px;text-transform:none}
+  .pcard.now .ptime{background:var(--amber);color:var(--ink)}
+  .pcard.next .ptime{background:rgba(15,122,77,.14);color:var(--green-deep)}
+  .pcard.later .ptime{background:var(--paper-2);color:var(--muted)}
+  .pcard h4{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(19px,2.1vw,25px);line-height:1.04;color:var(--ink);margin-top:2px}
+  .pcard p{font-size:12.5px;line-height:1.42;color:var(--muted)}
+  .pcard .pitem{font-size:12px;line-height:1.4;color:var(--ink);padding-left:15px;position:relative}
+  .pcard .pitem::before{content:"\2192";position:absolute;left:0;color:var(--green)}
+  .rmap-arrow{flex:0 0 auto;display:flex;align-items:center;color:var(--muted)}
+  .rmap-arrow svg{width:18px;height:18px}
+  @media(max-width:760px){.rmap-row{flex-direction:column}.rmap-arrow{transform:rotate(90deg);align-self:center}}
+
+  .agenda{position:fixed;left:0;top:0;bottom:0;width:214px;background:var(--ink);color:var(--paper);z-index:80;display:flex;flex-direction:column;padding:22px 0 18px;overflow-y:auto;border-right:1px solid rgba(247,245,239,.1)}
+  .agenda-brand{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:26px;padding:0 22px 16px;cursor:pointer;color:var(--paper);letter-spacing:.02em}
+  .agenda-brand.active{color:var(--amber)}
+  .agenda-brand .dot{color:var(--amber)}
+  .agenda-list{display:flex;flex-direction:column;gap:1px;padding:0 12px}
+  .agenda-item{display:flex;gap:9px;align-items:baseline;padding:8px 10px;border-radius:8px;cursor:pointer;transition:opacity .2s,background .2s;opacity:.4;border-left:2px solid transparent}
+  .agenda-item:hover{opacity:.85;background:rgba(247,245,239,.05)}
+  .agenda-item.active{opacity:1;border-left-color:var(--amber);background:rgba(232,184,75,.09)}
+  .agenda-item .ai-n{font-family:"DM Mono",monospace;font-size:10.5px;color:var(--amber);flex:0 0 auto}
+  .agenda-item .ai-t{font-family:"DM Sans",sans-serif;font-size:12.5px;line-height:1.25;color:var(--paper)}
+  .agenda-item.active .ai-t{font-weight:600}
+  .agenda-foot{margin-top:auto;padding:14px 22px 0;font-family:"DM Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(247,245,239,.38)}
+  .deck{left:214px}
+  .counter{left:238px}
+  .footer-mark{display:none}
+  @media(max-width:900px){
+    .agenda{display:none}
+    .deck{left:0}
+    .counter{left:24px}
+    .footer-mark{display:block}
+  }
+
+  .cstruct{margin-top:clamp(12px,2.2vh,22px)}
+  .cbase{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+  .cbase-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;border-top:3px solid var(--green)}
+  .cbase-card .bn{font-family:"DM Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+  .cbase-card .bt{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(17px,1.9vw,22px);line-height:1.05;color:var(--ink);margin-bottom:5px}
+  .cbase-card p{font-size:12px;line-height:1.4;color:var(--muted)}
+  .cbase-card p b{color:var(--ink)}
+  .cdec-t{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:clamp(12px,2vh,18px) 0 10px;display:flex;align-items:center;gap:12px}
+  .cdec-t::after{content:"";flex:1;height:1px;background:var(--line)}
+  .cdecs{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  .cdec{background:linear-gradient(180deg,#fff,#fbfaf6);border:1px solid var(--line);border-radius:12px;padding:14px 17px}
+  .cdec h4{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(17px,1.9vw,22px);color:var(--ink);margin-bottom:7px}
+  .copt{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px dotted var(--line)}
+  .copt:last-child{border-bottom:none}
+  .copt .oi{font-family:"DM Mono",monospace;font-size:11px;color:var(--muted);flex:0 0 auto;margin-top:1px}
+  .copt .ol{font-size:12.5px;line-height:1.32;color:var(--ink)}
+  .copt .ol small{display:block;color:var(--muted);font-size:11px;margin-top:1px;font-weight:400}
+  .copt.rec{background:rgba(232,184,75,.1);margin:2px -9px;padding:7px 9px;border-radius:8px;border-bottom:none}
+  .copt.rec .oi{color:var(--amber-deep)}
+  .copt.rec .ol{font-weight:600}
+  .rbadge{display:inline-block;background:var(--amber);color:var(--ink);font-family:"DM Mono",monospace;font-size:8px;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:999px;margin-left:6px;vertical-align:middle;font-weight:500}
+
+  .estack{max-width:340px;margin:clamp(10px,2vh,18px) auto 0}
+  .estack svg{width:100%;height:auto;display:block}
+  .estack-cap{text-align:center;font-size:12.5px;color:var(--muted);max-width:660px;margin:11px auto 0;line-height:1.45}
+  .estack-cap b{color:var(--ink)}
+
+  /* ---------- Chrome: toggle, nav ---------- */
+  .lang-toggle{
+    position:fixed;top:20px;right:22px;z-index:60;
+    display:flex;align-items:center;background:rgba(247,245,239,.1);
+    border:1px solid rgba(247,245,239,.28);border-radius:999px;
+    font-family:"DM Mono",monospace;font-size:12px;overflow:hidden;backdrop-filter:blur(6px);
+  }
+  .slide.paper ~ .lang-toggle{}
+  .lang-toggle button{
+    border:none;background:transparent;color:inherit;cursor:pointer;
+    padding:8px 14px;font-family:inherit;font-size:12px;letter-spacing:.08em;color:#fff;transition:.2s;
+  }
+  .lang-toggle button.on{background:var(--amber);color:var(--ink);font-weight:500}
+  /* toggle adapts to current slide bg */
+  body.on-paper .lang-toggle{background:rgba(12,26,20,.06);border-color:var(--line)}
+  body.on-paper .lang-toggle button{color:var(--muted)}
+  body.on-paper .lang-toggle button.on{background:var(--green);color:#fff}
+
+  .nav{position:fixed;bottom:20px;right:22px;z-index:60;display:flex;align-items:center;gap:10px}
+  .nav button{
+    width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(247,245,239,.92);color:var(--ink);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:.2s;
+  }
+  .nav button:hover{background:var(--green);color:#fff;border-color:var(--green)}
+  .nav button:disabled{opacity:.3;cursor:default}
+  .nav button:disabled:hover{background:rgba(247,245,239,.92);color:var(--ink);border-color:var(--line)}
+  .nav svg{width:18px;height:18px}
+  .counter{position:fixed;bottom:28px;left:24px;z-index:60;font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.1em;color:rgba(247,245,239,.6)}
+  body.on-paper .counter{color:var(--muted)}
+  .dots{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:9px}
+  .dots i{width:7px;height:7px;border-radius:50%;background:rgba(247,245,239,.3);cursor:pointer;transition:.2s}
+  body.on-paper .dots i{background:var(--line)}
+  .dots i.on{background:var(--amber);width:22px;border-radius:999px}
+
+  .footer-mark{position:fixed;top:22px;left:24px;z-index:55;font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.2em;color:rgba(247,245,239,.55)}
+  body.on-paper .footer-mark{color:var(--green)}
+  .footer-mark b{color:inherit;font-weight:500}
+
+  @media (max-width:720px){
+    .cols{grid-template-columns:1fr}
+    .arrow{transform:rotate(90deg);width:100%;height:22px}
+    .step{min-width:0}
+    .footer-mark{display:none}
+    .slide{padding:64px 20px 86px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .slide{transition:opacity .2s}
+  }
+</style>
+</head>
+<body class="on-dark">
+
+<div class="footer-mark"><b>AVANZA</b> · CONFIDENCIAL</div>
+
+<nav class="agenda" id="agenda">
+  <div class="agenda-brand" data-nav="0" onclick="go(0)">AVANZA<span class="dot">.</span></div>
+  <div class="agenda-list">
+    <div class="agenda-item" data-nav="1" onclick="go(1)"><span class="ai-n">01</span><span class="ai-t" data-es="Competencia" data-en="Competition"></span></div>
+    <div class="agenda-item" data-nav="2" onclick="go(2)"><span class="ai-n">02</span><span class="ai-t" data-es="Marco Legal" data-en="Legal Framework"></span></div>
+    <div class="agenda-item" data-nav="3" onclick="go(3)"><span class="ai-n">03</span><span class="ai-t" data-es="Mecánica del Crédito" data-en="Loan Mechanics"></span></div>
+    <div class="agenda-item" data-nav="4" onclick="go(4)"><span class="ai-n">04</span><span class="ai-t" data-es="La Inversión" data-en="The Capital"></span></div>
+    <div class="agenda-item" data-nav="5" onclick="go(5)"><span class="ai-n">05</span><span class="ai-t" data-es="Capital para Operar" data-en="Capital to Operate"></span></div>
+    <div class="agenda-item" data-nav="6" onclick="go(6)"><span class="ai-n">06</span><span class="ai-t" data-es="Estructura de Capital" data-en="Capital Structure"></span></div>
+    <div class="agenda-item" data-nav="7" onclick="go(7)"><span class="ai-n">07</span><span class="ai-t" data-es="Proceso Completo" data-en="End-to-End Process"></span></div>
+    <div class="agenda-item" data-nav="8" onclick="go(8)"><span class="ai-n">08</span><span class="ai-t" data-es="Equipo" data-en="Team"></span></div>
+    <div class="agenda-item" data-nav="9" onclick="go(9)"><span class="ai-n">09</span><span class="ai-t" data-es="Hoja de Ruta" data-en="Roadmap"></span></div>
+  </div>
+  <div class="agenda-foot" data-es="Confidencial" data-en="Confidential"></div>
+</nav>
+
+<div class="lang-toggle" role="group" aria-label="Language">
+  <button id="btn-es" class="on" onclick="setLang('es')">ES</button>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- ======== COVER ======== -->
+  <section class="slide dark active" data-bg="dark">
+    <div class="slide-inner">
+      <div class="eyebrow" data-es="Propuesta final · Construcción de la compañía" data-en="Final proposal · Building the company"></div>
+      <div class="wordmark" style="margin-top:18px">AVANZA<span class="dot">.</span></div>
+      <div class="cover-sub">Venezuela · Lending</div>
+      <p class="lede" style="margin-top:30px"
+         data-es="Financiamiento vehicular en dólares para el segmento que la banca venezolana no atiende — con la garantía de un activo real detrás de cada contrato."
+         data-en="USD vehicle financing for the segment Venezuelan banks won't serve — backed by a real asset behind every contract."></p>
+      <div class="cover-meta">
+        <div><div class="k" data-es="Preparado para" data-en="Prepared for"></div><div class="v">Jhonny Maldonado</div></div>
+        <div><div class="k" data-es="Socio operador" data-en="Operating partner"></div><div class="v">Diego Aparicio</div></div>
+        <div><div class="k" data-es="Fecha" data-en="Date"></div><div class="v" data-es="Abril 2026" data-en="April 2026"></div></div>
+        <div><div class="k" data-es="Uso" data-en="Use"></div><div class="v" data-es="Interno · Confidencial" data-en="Internal · Confidential"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 01 · COMPETENCIA ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="01 · Competencia" data-en="01 · Competition"></span></div>
+      <h2 class="display" data-es="Quién financia carros hoy — y a qué precio" data-en="Who finances cars today — and at what price"></h2>
+      <p class="lede" data-es="Cuatro tipos de jugadores. Todos cobran en dólares. Todos exigen ~50% de inicial y solo atienden al cliente bancarizado y documentado."
+         data-en="Four kinds of players. All charge in dollars. All require ~50% down and only serve the banked, fully-documented client."></p>
+
+      <div class="table-wrap">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th data-es="Competidor" data-en="Competitor"></th>
+              <th data-es="Costo al cliente" data-en="Cost to borrower"></th>
+              <th data-es="Inicial" data-en="Down pmt"></th>
+              <th data-es="Plazo" data-en="Tenor"></th>
+              <th data-es="Aprobación" data-en="Approval"></th>
+              <th data-es="Moneda" data-en="Currency"></th>
+              <th data-es="Cobranza / Garantía" data-en="Collection / Collateral"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="co"><span class="rank">#1</span>PIVCA<small data-es="Promotora de Inversiones · vía aliado bancario (BNC)" data-en="Promotora de Inversiones · via bank partner (BNC)"></small></td>
+              <td class="rate">18%<small style="display:block;color:var(--muted);font-family:DM Sans" data-es="+ 3% Mayor · 4% Menor comisión" data-en="+ 3% Mayor · 4% Menor fee"></small></td>
+              <td><span class="pill">50%</span></td>
+              <td data-es="hasta 24 m" data-en="up to 24 mo"></td>
+              <td data-es="5–10 días*" data-en="5–10 days*"></td>
+              <td class="mono">USD</td>
+              <td data-es="Reserva de dominio · exige documentación" data-en="Title retention · docs required"></td>
+            </tr>
+            <tr>
+              <td class="co"><span class="rank">#2</span>ARCA<small data-es="Financiadora privada · solo Plan Menor" data-en="Private lender · Plan Menor only"></small></td>
+              <td class="rate">11.67%<small style="display:block;color:var(--muted);font-family:DM Sans" data-es="APR + 5–6.5% comisión" data-en="APR + 5–6.5% fee"></small></td>
+              <td><span class="pill">40–50%</span></td>
+              <td data-es="~24 m" data-en="~24 mo"></td>
+              <td data-es="3–7 días*" data-en="3–7 days*"></td>
+              <td class="mono">USD</td>
+              <td data-es="Reserva de dominio" data-en="Title retention"></td>
+            </tr>
+            <tr>
+              <td class="co"><span class="rank">#3</span><span data-es="Bancos" data-en="Banks"></span><small>BNC · Bancamiga · Banesco · Provincial</small></td>
+              <td class="rate">20–22%<small style="display:block;color:var(--muted);font-family:DM Sans" data-es="18% APR + 2–4% comisión" data-en="18% APR + 2–4% fee"></small></td>
+              <td><span class="pill">30–50%</span></td>
+              <td data-es="12–48 m" data-en="12–48 mo"></td>
+              <td data-es="15–30 días" data-en="15–30 days"></td>
+              <td class="mono">USD / UVC</td>
+              <td data-es="Exige nómina, RIF, historial · cliente alto ingreso" data-en="Payroll, tax ID, history · high-income only"></td>
+            </tr>
+            <tr>
+              <td class="co"><span class="rank">#4</span><span data-es="Kompii y otros" data-en="Kompii & others"></span><small data-es="Jugadores menores / fintech" data-en="Smaller players / fintech"></small></td>
+              <td class="rate">24–36%*</td>
+              <td><span class="pill">30–40%*</span></td>
+              <td data-es="12–18 m*" data-en="12–18 mo*"></td>
+              <td data-es="24–72 h*" data-en="24–72 h*"></td>
+              <td class="mono">USD</td>
+              <td data-es="Reputacional / plataforma*" data-en="Reputational / platform*"></td>
+            </tr>
+            <tr class="avanza">
+              <td class="co"><span class="rank">★</span>AVANZA<small data-es="Nuestra posición objetivo" data-en="Our target position"></small></td>
+              <td class="rate" data-es="Competitiva" data-en="Competitive"></td>
+              <td><span class="pill" data-es="desde 30%" data-en="from 30%"></span></td>
+              <td data-es="~24 m" data-en="~24 mo"></td>
+              <td data-es="48–72 h" data-en="48–72 h"></td>
+              <td class="mono">USD / USDT</td>
+              <td data-es="Reserva de dominio sobre activo real + recuperación" data-en="Title retention on a real asset + repossession"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tnote" data-es="* Estimado. Todos los jugadores cobran exclusivamente en dólares. Tasas y comisiones bancarias confirmadas (Maxiautos, El Diario, BNC 2026)."
+           data-en="* Estimated. Every player charges exclusively in USD. Bank rates and fees confirmed (Maxiautos, El Diario, BNC 2026)."></div>
+      <div class="callout">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <p data-es="<strong>Dónde atacar:</strong> ARCA ni siquiera hace Plan Mayor y PIVCA depende de un banco — el floor plan a concesionarios es el producto menos disputado. Y en consumo, todos piden ~50% inicial y solo prestan al cliente documentado: ese es el segmento que AVANZA toma, con la reserva de dominio protegiendo el downside."
+           data-en="<strong>Where to attack:</strong> ARCA doesn't even do Plan Mayor and PIVCA rides on a bank — dealer floor plan is the least-contested product. And in consumer, everyone demands ~50% down and only lends to documented clients: that's the segment AVANZA takes, with title retention protecting the downside."></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 02 · MARCO LEGAL ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="02 · Marco Legal" data-en="02 · Legal Framework"></span></div>
+      <h2 class="display" data-es="No somos un banco. Compramos carros para revenderlos." data-en="We are not a bank. We buy cars to resell them."></h2>
+      <p class="lede" data-es="AVANZA no capta depósitos del público — por eso no es intermediación financiera y no requiere licencia ni cae bajo SUDEBAN. Es una operación comercial con capital propio."
+         data-en="AVANZA takes no public deposits — so it is not financial intermediation, needs no license, and falls outside SUDEBAN. It is a commercial operation using its own capital."></p>
+      <div class="cols">
+        <div class="card bank">
+          <span class="tag" data-es="◆ Institución financiera" data-en="◆ Financial institution"></span>
+          <h3 data-es="Banco / Financiera regulada" data-en="Bank / Regulated lender"></h3>
+          <div class="role" data-es="Presta dinero. Supervisado por el Estado." data-en="Lends money. State-supervised."></div>
+          <ul class="clist">
+            <li><svg class="m x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-es="<b>Capta depósitos del público</b> → regulado por SUDEBAN" data-en="<b>Takes public deposits</b> → regulated by SUDEBAN"></span></li>
+            <li><svg class="m x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-es="Requiere <b>licencia bancaria</b>" data-en="Requires a <b>banking license</b>"></span></li>
+            <li><svg class="m x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-es="Sujeto al <b>tope de usura 24%</b> (Art. 1746 CC)" data-en="Bound by the <b>24% usury cap</b> (Art. 1746 CC)"></span></li>
+            <li><svg class="m x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-es="Presta dinero → solo un <b>derecho de cobro</b>" data-en="Lends money → only a <b>right to collect</b>"></span></li>
+            <li><svg class="m x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-es="Recuperación = <b>juicio de cobro largo</b>" data-en="Recovery = a <b>long collection lawsuit</b>"></span></li>
+          </ul>
+        </div>
+        <div class="card us">
+          <span class="tag" data-es="★ Operación comercial" data-en="★ Commercial operation"></span>
+          <h3 data-es="AVANZA — comerciante de vehículos" data-en="AVANZA — vehicle merchant"></h3>
+          <div class="role" data-es="Compra y revende carros. Capital propio." data-en="Buys and resells cars. Own capital."></div>
+          <ul class="clist">
+            <li><svg class="m ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span data-es="<b>No capta depósitos</b> → fuera del alcance de SUDEBAN" data-en="<b>No deposits</b> → outside SUDEBAN's reach"></span></li>
+            <li><svg class="m ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span data-es="<b>No requiere licencia</b> financiera" data-en="<b>No financial license</b> required"></span></li>
+            <li><svg class="m ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span data-es="HoldCo <b>offshore (Panamá)</b> titular → <b>sin tope 24%</b> (igual que Cashea)" data-en="<b>Offshore (Panama)</b> HoldCo as owner → <b>no 24% cap</b> (same as Cashea)"></span></li>
+            <li><svg class="m ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span data-es="<b>Retiene la titularidad</b> del vehículo (reserva de dominio)" data-en="<b>Retains title</b> to the vehicle (title retention)"></span></li>
+            <li><svg class="m ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span data-es="Default → <b>recupera un activo físico real</b>, no demanda" data-en="Default → <b>repossesses a real physical asset</b>, not a lawsuit"></span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="flow-title" data-es="Cómo funciona la reserva de dominio" data-en="How title retention works"></div>
+      <div class="flow">
+        <div class="step"><div class="n">01</div><div class="t" data-es="AVANZA compra el carro" data-en="AVANZA buys the car"></div><div class="d" data-es="del concesionario, con capital propio" data-en="from the dealer, with own capital"></div></div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step"><div class="n">02</div><div class="t" data-es="Lo revende al comprador" data-en="Resells to the buyer"></div><div class="d" data-es="con Contrato de Venta con Reserva de Dominio" data-en="under a Title-Retention Sale Contract"></div></div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step"><div class="n">03</div><div class="t" data-es="El comprador usa, no posee" data-en="Buyer uses, doesn't own"></div><div class="d" data-es="maneja el carro; AVANZA es dueño legal. Registrado en INTT." data-en="drives the car; AVANZA holds legal title. Filed at INTT."></div></div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step win"><div class="n">04</div><div class="t" data-es="Última cuota → libera título" data-en="Final payment → title released"></div><div class="d" data-es="Impago → AVANZA recupera el vehículo" data-en="Default → AVANZA repossesses the vehicle"></div></div>
+      </div>
+      <div class="default-flag">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span data-es="<b>La diferencia frente a Cashea:</b> su cobro es reputacional. El nuestro es un activo real que podemos recuperar. La Ley de Ventas con Reserva de Dominio rige desde los años 1940 — el mecanismo es estándar y probado."
+              data-en="<b>The difference vs Cashea:</b> their collection is reputational. Ours is a real asset we can take back. The Title-Retention Sales Law has governed since the 1940s — standard, proven mechanism."></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 03 · MECÁNICA DEL CRÉDITO ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="03 · Mecánica del Crédito" data-en="03 · Loan Mechanics"></span></div>
+      <h2 class="display" data-es="Cómo funciona un crédito, paso a paso" data-en="How a loan works, step by step"></h2>
+      <p class="lede" data-es="Del análisis a la entrega del título — cada paso respaldado por la Reserva de Dominio sobre el carro." data-en="From review to title handover — every step backed by Title Retention over the car."></p>
+      <div class="tl">
+        <div class="tl-row"><div class="tl-node">01</div><div class="tl-card"><div class="tl-ph" data-es="Solicitud · Días 1–2" data-en="Application · Days 1–2"></div><h4 data-es="Análisis del crédito" data-en="Loan review"></h4><p data-es="El cliente elige un carro en un concesionario aliado. AVANZA revisa identidad, flujo de ingresos y capacidad de inicial." data-en="The customer picks a car at a partner dealer. AVANZA reviews identity, income flow and down-payment capacity."></p><div class="tl-tags"><span class="tl-tag" data-es="KYC · ingresos" data-en="KYC · income"></span><span class="tl-tag" data-es="Inicial desde 30%" data-en="Down from 30%"></span></div></div></div>
+        <div class="tl-row"><div class="tl-node">02</div><div class="tl-card"><div class="tl-ph" data-es="Decisión · 48–72 h" data-en="Decision · 48–72 h"></div><h4 data-es="Aprobación" data-en="Approval"></h4><p data-es="Se fija el monto financiado, el plazo (~24 meses), la tasa y la cuota mensual en dólares. Se emite el contrato." data-en="Amount financed, tenor (~24 months), rate and monthly USD payment are set. The contract is issued."></p><div class="tl-tags"><span class="tl-tag" data-es="Plazo ~24 m" data-en="~24-mo tenor"></span><span class="tl-tag" data-es="Cuota en USD" data-en="USD payment"></span></div></div></div>
+        <div class="tl-row"><div class="tl-node amber">03</div><div class="tl-card amber"><div class="tl-ph" data-es="Cierre · Garantía" data-en="Closing · Collateral"></div><h4 data-es="Desembolso + Reserva de Dominio" data-en="Disbursement + Title Retention"></h4><p data-es="AVANZA <b>compra el carro</b> al concesionario y lo revende al cliente con Reserva de Dominio. Se registra en el INTT a nombre de AVANZA. El cliente paga la inicial y se lleva el carro — pero <b>el título es de AVANZA</b>." data-en="AVANZA <b>buys the car</b> from the dealer and resells it to the customer under Title Retention. Filed at INTT in AVANZA's name. The customer pays the down payment and drives off — but <b>AVANZA holds the title</b>."></p><div class="tl-tags"><span class="tl-tag amber" data-es="Título = AVANZA" data-en="Title = AVANZA"></span><span class="tl-tag amber" data-es="Registro INTT" data-en="INTT filing"></span></div></div></div>
+        <div class="tl-row"><div class="tl-node">04</div><div class="tl-card"><div class="tl-ph" data-es="Servicio · Meses 1–24" data-en="Servicing · Months 1–24"></div><h4 data-es="Pagos de capital e interés" data-en="Principal & interest payments"></h4><p data-es="El cliente paga cuotas mensuales en USD/USDT (capital + interés). AVANZA cobra y administra. Si deja de pagar, <b>recupera el vehículo</b> — la garantía es el carro." data-en="The customer pays monthly installments in USD/USDT (principal + interest). AVANZA services and collects. On default, it <b>repossesses the vehicle</b> — the car is the collateral."></p><div class="tl-tags"><span class="tl-tag" data-es="USD / USDT" data-en="USD / USDT"></span><span class="tl-tag" data-es="Default → recuperación" data-en="Default → repossession"></span></div></div></div>
+        <div class="tl-row"><div class="tl-node win">05</div><div class="tl-card win"><div class="tl-ph" data-es="Cierre del crédito" data-en="Loan close"></div><h4 data-es="Liberación y entrega del título" data-en="Release & title handover"></h4><p data-es="Con la última cuota, AVANZA emite la Constancia de Liberación de Reserva de Dominio. El cliente registra la propiedad plena en el INTT — <b>ya es dueño</b>. Y queda perfilado para su próxima compra." data-en="On the final payment, AVANZA issues the Title-Retention Release. The customer registers full ownership at INTT — <b>now the legal owner</b>. And is profiled for the next purchase."></p><div class="tl-tags"><span class="tl-tag" data-es="Título → cliente" data-en="Title → customer"></span><span class="tl-tag" data-es="Cliente recurrente" data-en="Repeat customer"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 04 · LA INVERSIÓN ======== -->
+  <section class="slide dark" data-bg="dark">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="04 · La Inversión" data-en="04 · The Capital"></span></div>
+      <h2 class="display" data-es="Cuánto necesitamos para arrancar" data-en="What we need to start"></h2>
+      <div class="cap-hero">
+        <span class="approx">≈</span>
+        <span class="big">$8.7M</span>
+        <span class="lab" data-es="Efectivo a llamar · Año 1" data-en="Cash to call · Year 1"></span>
+      </div>
+      <p class="lede" style="margin-top:14px" data-es="El libro es ~$11.25M en nocional, pero el cliente financia el 30% inicial de cada Plan Menor. Con ~$8.7M en efectivo financiamos <b>250 carros de consumo</b> y un <b>inventario de 50 vehículos</b> a un dealer — cada dólar es un carro con reserva de dominio." data-en="The book is ~$11.25M notional, but the customer funds the 30% down on every Plan Menor. With ~$8.7M cash we finance <b>250 consumer cars</b> and a <b>50-vehicle dealer inventory</b> — every dollar is a car under title retention."></p>
+      <div class="src-title" data-es="En qué se usa el efectivo" data-en="Where the cash goes"></div>
+      <div class="uof">
+        <div class="uof-row">
+          <div class="name"><span data-es="Plan Menor — 250 carros financiados" data-en="Plan Menor — 250 cars financed"></span><small data-es="$35K c/u · 70% financiado (cliente pone 30%)" data-en="$35K each · 70% financed (customer 30% down)"></small></div>
+          <div class="uof-bar"><span style="width:71%;background:var(--green)"></span></div>
+          <div class="uof-amt">$6.125M</div>
+        </div>
+        <div class="uof-row">
+          <div class="name"><span data-es="Plan Mayor — 1 facilidad · 50 vehículos" data-en="Plan Mayor — 1 facility · 50 vehicles"></span><small data-es="$50K c/u · portafolio $2.5M · saldo prom. revolvente" data-en="$50K each · $2.5M portfolio · revolving avg outstanding"></small></div>
+          <div class="uof-bar"><span style="width:22%;background:var(--amber-deep)"></span></div>
+          <div class="uof-amt">$1.875M</div>
+        </div>
+        <div class="uof-row">
+          <div class="name"><span data-es="Operación y arranque (OpEx)" data-en="Operations & setup (OpEx)"></span><small data-es="equipo, legal, INTT, recuperación" data-en="team, legal, INTT, recovery"></small></div>
+          <div class="uof-bar"><span style="width:8%;background:#7d8a82"></span></div>
+          <div class="uof-amt">$0.671M</div>
+        </div>
+        <div class="uof-total"><span class="l" data-es="Efectivo total · Año 1" data-en="Total cash · Year 1"></span><span class="v">$8.7M</span></div>
+      </div>
+      <div class="src-title" data-es="Cómo entra el capital" data-en="How the capital comes in"></div>
+      <div class="captl">
+        <div class="cstep now">
+          <div class="cn" data-es="1 · Ahora" data-en="1 · Now"></div>
+          <h4 data-es="Nuestro capital primero" data-en="Our capital first"></h4>
+          <p data-es="Grupo Apex (Jhonny + Diego) pone el primer tranche. Arrancamos con dinero propio." data-en="Grupo Apex (Jhonny + Diego) puts in the first tranche. We start with our own money."></p>
+        </div>
+        <div class="cstep">
+          <div class="cn" data-es="2 · Prueba de concepto" data-en="2 · Proof of concept"></div>
+          <h4 data-es="Probamos el modelo" data-en="We prove the model"></h4>
+          <p data-es="Originamos, cobramos y recuperamos. Demostramos las cifras con nuestro propio riesgo." data-en="We originate, collect and repossess. We prove the numbers on our own risk."></p>
+        </div>
+        <div class="cstep">
+          <div class="cn" data-es="3 · A medida que se necesita" data-en="3 · As needed"></div>
+          <h4 data-es="Levantamos a inversionistas" data-en="We raise from investors"></h4>
+          <p data-es="Con la prueba en mano, llamamos capital de inversionistas (equity preferente no participativa) para escalar el libro." data-en="With proof in hand, we call investor capital (preferred non-participating equity) to scale the book."></p>
+        </div>
+      </div>
+<div class="src-title" data-es="OpEx Año 1 — desglose ($671K)" data-en="Year-1 OpEx — breakdown ($671K)"></div>
+      <ul class="m1-list">
+        <li><span data-es="Nómina cargada (equipo)" data-en="Loaded payroll (team)"></span><span class="v">$300K</span></li>
+        <li><span data-es="Cobranza, agentes y recuperación" data-en="Collections, agents & recovery"></span><span class="v">$60K</span></li>
+        <li><span data-es="Legal, incorporación y cumplimiento" data-en="Legal, incorporation & compliance"></span><span class="v">$55K</span></li>
+        <li><span data-es="Registro INTT y gastos por vehículo" data-en="INTT registration & per-vehicle fees"></span><span class="v">$40K</span></li>
+        <li><span data-es="Oficina y servicios" data-en="Office & utilities"></span><span class="v">$36K</span></li>
+        <li><span data-es="Marketing" data-en="Marketing"></span><span class="v">$20K</span></li>
+        <li><span data-es="Adquisición de dealers" data-en="Dealer acquisition"></span><span class="v">$20K</span></li>
+        <li><span data-es="Sistemas, software y rails USD/USDT" data-en="Systems, software & USD/USDT rails"></span><span class="v">$25K</span></li>
+        <li><span data-es="Auditoría e impuestos (2 entidades)" data-en="Audit & tax (2 entities)"></span><span class="v">$25K</span></li>
+        <li><span data-es="Viajes y desarrollo de negocio" data-en="Travel & business development"></span><span class="v">$20K</span></li>
+        <li><span data-es="Seguros y comisiones financieras" data-en="Insurance & financial fees"></span><span class="v">$20K</span></li>
+        <li><span data-es="Contingencia" data-en="Contingency"></span><span class="v">$50K</span></li>
+      </ul>
+      <div class="tnote" data-es="* OpEx estimado — ajústalo contra tu lista. La pérdida por default se modela aparte, en el spread, no en el OpEx." data-en="* OpEx estimated — reconcile against your list. Default loss is modeled separately, in the spread, not in OpEx."></div>
+            <div class="tnote" data-es="Caso base · Plan Menor 250 @ 18% (70% financiado tras 30% inicial) · Plan Mayor $2.5M facilidad, saldo prom. $1.875M @ 16% · OpEx $671K · 30/70 (ajustable)." data-en="Base case · Plan Menor 250 @ 18% (70% financed after 30% down) · Plan Mayor $2.5M facility, $1.875M avg outstanding @ 16% · OpEx $671K · 30/70 (adjustable)."></div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 05 · CAPITAL PARA OPERAR ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="05 · Capital para Operar" data-en="05 · Capital to Operate"></span></div>
+      <h2 class="display" data-es="Cuánto llamamos, trimestre a trimestre" data-en="How much we call, quarter by quarter"></h2>
+      <p class="lede" data-es="No pedimos todo de golpe. Llamamos capital a medida que originamos — y el cliente financia el 30% inicial, así que el efectivo es menor que el libro." data-en="We don't ask for it all at once. We call capital as we originate — and the customer funds the 30% down, so the cash is less than the book."></p>
+
+      <div class="src-title" data-es="Llamadas de capital por trimestre" data-en="Capital calls by quarter"></div>
+      <div class="table-wrap">
+        <table class="cmp">
+          <thead><tr>
+            <th data-es="Trimestre" data-en="Quarter"></th>
+            <th data-es="Plan Menor (nuevos)" data-en="Plan Menor (new)"></th>
+            <th data-es="Plan Mayor (nuevos)" data-en="Plan Mayor (new)"></th>
+            <th data-es="OpEx" data-en="OpEx"></th>
+            <th data-es="Llamada de capital" data-en="Capital call"></th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="co">Q1</td><td>63 · $2.19M</td><td>50 · $2.5M</td><td class="mono">$0.29M</td><td class="rate">$3.7M</td></tr>
+            <tr><td class="co">Q2</td><td>63 · $2.19M</td><td class="mono" data-es="revolvente" data-en="revolving"></td><td class="mono">$0.13M</td><td class="rate">$1.7M</td></tr>
+            <tr><td class="co">Q3</td><td>63 · $2.19M</td><td class="mono" data-es="revolvente" data-en="revolving"></td><td class="mono">$0.13M</td><td class="rate">$1.7M</td></tr>
+            <tr><td class="co">Q4</td><td>61 · $2.13M</td><td class="mono" data-es="revolvente" data-en="revolving"></td><td class="mono">$0.13M</td><td class="rate">$1.6M</td></tr>
+            <tr class="avanza"><td class="co" data-es="Total Año 1" data-en="Year 1 total"></td><td>250 · $8.75M</td><td>50 · $2.5M</td><td class="mono">$0.67M</td><td class="rate">$8.7M</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tnote" data-es="Llamada/trimestre = 70% del nocional de Plan Menor (cliente pone 30% inicial) + Plan Mayor (se fondea una vez, luego revolvente) + OpEx. Q1 incluye el arranque (~$100K)." data-en="Call/quarter = 70% of Plan Menor notional (customer puts 30% down) + Plan Mayor (funded once, then revolving) + OpEx. Q1 includes setup (~$100K)."></div>
+
+      <div class="callout">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <p data-es="<strong>Lo que casi siempre se olvida — y aquí es crítico:</strong> el registro INTT por cada vehículo, los costos de recuperación (grúa, depósito, legal), la auditoría de dos entidades (HoldCo Panamá + C.A. Venezuela) y los rails de USD/USDT." data-en="<strong>What's almost always forgotten — and is critical here:</strong> per-vehicle INTT registration, recovery costs (towing, storage, legal), dual-entity audit (Panama HoldCo + Venezuela C.A.), and USD/USDT rails."></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 06 · ESTRUCTURA DE CAPITAL ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="06 · Estructura de Capital" data-en="06 · Capital Structure"></span></div>
+      <h2 class="display" data-es="Equity preferente no participativa — redimible" data-en="Redeemable non-participating preferred equity"></h2>
+      <p class="lede" data-es="Capital barato con las protecciones que necesitamos: cupón fijo, sin upside para ellos, y con derecho a recomprarlo a un precio acotado." data-en="Cheap capital with the protections we need: a fixed coupon, no upside for them, and a right to buy it back at a bounded price."></p>
+
+      <div class="estack">
+        <svg viewBox="0 0 400 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Equity stack">
+          <defs>
+            <linearGradient id="esAmber" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2CE69"/><stop offset="1" stop-color="#E3B143"/></linearGradient>
+            <linearGradient id="esGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#15885C"/><stop offset="1" stop-color="#0B3D2A"/></linearGradient>
+          </defs>
+          <line x1="26" y1="52" x2="26" y2="278" stroke="#0F7A4D" stroke-width="2" opacity=".4"/>
+          <polygon points="21,274 31,274 26,288" fill="#0F7A4D" opacity=".4"/>
+          <text x="13" y="106" transform="rotate(-90 13 106)" text-anchor="middle" font-family="DM Mono, monospace" font-size="8.5" letter-spacing="1.1" fill="#0F7A4D" opacity=".7" data-es="COBRA 1°" data-en="PAID 1ST">COBRA 1°</text>
+          <text x="13" y="222" transform="rotate(-90 13 222)" text-anchor="middle" font-family="DM Mono, monospace" font-size="8.5" letter-spacing="1.1" fill="#B4452F" opacity=".75" data-es="1ª PÉRDIDA" data-en="1ST LOSS">1ª PÉRDIDA</text>
+          <polygon points="216,26 274.6,129 157.4,129" fill="url(#esAmber)"/>
+          <polygon points="157.4,129 274.6,129 372,300 60,300" fill="url(#esGreen)"/>
+          <line x1="157.4" y1="129" x2="274.6" y2="129" stroke="#F7F5EF" stroke-width="2.5"/>
+          <polygon points="216,26 372,300 60,300" fill="none" stroke="#0C1A14" stroke-width="1.5" opacity=".14"/>
+          <text x="216" y="84" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" letter-spacing="1.3" fill="#5b4410" data-es="PREFERENTE" data-en="PREFERRED">PREFERENTE</text>
+          <text x="216" y="105" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="14" fill="#0C1A14" data-es="Inversionistas" data-en="Investors">Inversionistas</text>
+          <text x="216" y="122" text-anchor="middle" font-family="DM Mono, monospace" font-size="8.5" fill="#6b4f12" data-es="no participativa" data-en="non-participating">no participativa</text>
+          <text x="216" y="188" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" letter-spacing="1.3" fill="#E8B84B" data-es="COMÚN" data-en="COMMON">COMÚN</text>
+          <text x="216" y="210" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="19" fill="#F7F5EF">Grupo Apex</text>
+          <text x="216" y="229" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#F7F5EF" opacity=".72">Jhonny + Diego</text>
+          <text x="216" y="256" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#E8B84B" data-es="primera pérdida · residual" data-en="first loss · residual">primera pérdida · residual</text>
+          <rect x="60" y="312" width="312" height="42" rx="8" fill="#0C1A14"/>
+          <text x="216" y="338" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" letter-spacing="1.3" fill="#E8B84B" data-es="RESERVA DE DOMINIO" data-en="TITLE RETENTION">RESERVA DE DOMINIO</text>
+        </svg>
+      </div>
+      <p class="estack-cap" data-es="Dos tipos de equity: el <b>preferente</b> (inversionistas) cobra primero, tiene retorno fijo y sale; el <b>común</b> (nosotros) absorbe la primera pérdida y se queda con todo el residual." data-en="Two equity types: <b>preferred</b> (investors) is paid first, fixed return, then exits; <b>common</b> (us) absorbs first loss and keeps all the residual."></p>
+
+      <div class="cstruct">
+        <div class="cbase">
+          <div class="cbase-card">
+            <div class="bn" data-es="Cupón" data-en="Coupon"></div>
+            <div class="bt" data-es="15% preferente" data-en="15% preferred"></div>
+            <p data-es="Acumulativo — <b>acumula si no se paga</b>. El cupón barato del instrumento." data-en="Cumulative — <b>accrues if unpaid</b>. The cheap coupon of the instrument."></p>
+          </div>
+          <div class="cbase-card">
+            <div class="bn" data-es="Protección de upside" data-en="Upside protection"></div>
+            <div class="bt" data-es="No participativa" data-en="Non-participating"></div>
+            <p data-es="Cobra el pref y <b>nada más</b>. El residual — todo el upside — es 100% nuestro." data-en="Earns the pref and <b>nothing more</b>. The residual — all upside — is 100% ours."></p>
+          </div>
+          <div class="cbase-card">
+            <div class="bn" data-es="Control" data-en="Control"></div>
+            <div class="bt" data-es="Redimible" data-en="Redeemable"></div>
+            <p data-es="Derecho a recomprar tras un <b>lockout de 18–24 meses</b>. No cedemos la compañía." data-en="Right to buy it back after an <b>18–24 month lockout</b>. We don't give up the company."></p>
+          </div>
+        </div>
+
+        <div class="cdec-t" data-es="Decisiones abiertas" data-en="Open decisions"></div>
+        <div class="cdecs">
+          <div class="cdec">
+            <h4 data-es="Precio de redención" data-en="Redemption price"></h4>
+            <div class="copt"><span class="oi">A</span><span class="ol" data-es="Par + acumulado<small>Capital + pref no pagado. Lo más barato para nosotros.</small>" data-en="Par + accrued<small>Capital + unpaid pref. Cheapest for us.</small>"></span></div>
+            <div class="copt"><span class="oi">B</span><span class="ol" data-es="Múltiplo MOIC<small>1.5–2.0× el capital aportado. Retorno acotado.</small>" data-en="MOIC multiple<small>1.5–2.0× capital invested. Bounded return.</small>"></span></div>
+            <div class="copt"><span class="oi">C</span><span class="ol" data-es="Piso de IRR<small>Precio que da ≥22% IRR al inversionista.</small>" data-en="IRR floor<small>Price that yields the investor ≥22% IRR.</small>"></span></div>
+            <div class="copt rec"><span class="oi">D</span><span class="ol"><span class="oll" data-es="Mayor de MOIC o piso IRR, con tope 2.0×" data-en="Greater of MOIC or IRR floor, capped at 2.0×"></span> <span class="rbadge" data-es="Recomendado" data-en="Recommended"></span><small data-es="Protege si redimimos temprano, premia la paciencia y el tope 2.0× mantiene la no participación en holds largos." data-en="Protects early redemption, rewards patience, and the 2.0× cap keeps it non-participating on long holds."></small></span></div>
+          </div>
+          <div class="cdec">
+            <h4 data-es="Kicker" data-en="Kicker"></h4>
+            <div class="copt"><span class="oi">A</span><span class="ol" data-es="10% sobre ganancias<small>Sobre las ganancias generadas con el dinero del inversionista.</small>" data-en="10% on profits<small>On profits generated with the investor's money.</small>"></span></div>
+            <div class="copt rec"><span class="oi">B</span><span class="ol"><span class="oll" data-es="Colapsado en la redención" data-en="Folded into redemption"></span> <span class="rbadge" data-es="Recomendado" data-en="Recommended"></span><small data-es="Un solo pago. No apilar kicker + prima de redención." data-en="One payment. Don't stack kicker + redemption premium."></small></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <p data-es="<strong>Recomendado:</strong> redimir al <strong>mayor de 1.5× o 22% IRR</strong>, con el kicker colapsado ahí — un solo número. Ojo: &ldquo;barato&rdquo; + &ldquo;no participativa&rdquo; + &ldquo;recompra barata&rdquo; no coexisten; si mantienes el 15%, la prima de redención es lo que lo hace vendible." data-en="<strong>Recommended:</strong> redeem at the <strong>greater of 1.5× or 22% IRR</strong>, kicker folded in — one number. Note: &ldquo;cheap&rdquo; + &ldquo;non-participating&rdquo; + &ldquo;cheap buyback&rdquo; can't all be true; if you hold 15%, the redemption premium is what makes it sellable."></p>
+      </div>
+      <div class="tnote" data-es="Prelación: el preferente cobra primero; nosotros absorbemos la primera pérdida y nos quedamos con el residual. Instrumento a nivel HoldCo (Panamá) — confirmar con Pedro que no se recaracteriza como deuda." data-en="Seniority: preferred is paid first; we absorb first loss and keep the residual. Instrument sits at the HoldCo (Panama) level — confirm with Pedro it isn't recharacterized as debt."></div>
+    </div>
+  </section>
+  <!-- ======== SLIDE 07 · PROCESO COMPLETO ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="07 · Proceso Completo" data-en="07 · End-to-End Process"></span></div>
+      <h2 class="display" data-es="Del piloto a la escala, paso a paso" data-en="From pilot to scale, step by step"></h2>
+      <p class="lede" data-es="Cómo levantamos, prestamos, cobramos, pagamos pref (trimestral), reinvertimos y retiramos — en tres fases, empezando con lo mínimo." data-en="How we raise, lend, collect, pay pref (quarterly), reinvest and distribute — in three phases, starting minimal."></p>
+
+      <div class="snake">
+        <div class="sphase p0"><span data-es="Fase 0 · Piloto autofinanciado" data-en="Phase 0 · Self-funded pilot"></span><span class="amt">$300–500K · Jhonny + Diego</span></div>
+        <div class="snake-row">
+          <div class="snode p0"><div class="sn" data-es="Paso 1" data-en="Step 1"></div><div class="st" data-es="Fondear con lo propio" data-en="Fund it ourselves"></div><div class="sd" data-es="Una sola cuenta bancaria. Dinero propio, sin instrumento formal." data-en="One bank account. Own money, no formal instrument."></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="snode p0"><div class="sn" data-es="Paso 2" data-en="Step 2"></div><div class="st" data-es="Emitir préstamos" data-en="Emit loans"></div><div class="sd" data-es="Originar en ambos planes por igual. Compra + reserva de dominio, registrada en INTT." data-en="Originate in both plans equally. Purchase + title retention, filed at INTT."></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="snode p0"><div class="sn" data-es="Paso 3" data-en="Step 3"></div><div class="st" data-es="Cobrar y recuperar" data-en="Collect & recover"></div><div class="sd" data-es="Cobrar cuotas y ejecutar UNA recuperación real, de punta a punta." data-en="Collect installments and execute ONE real repossession, end to end."></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="snode p0"><div class="sn" data-es="Paso 4" data-en="Step 4"></div><div class="st" data-es="Gate de salida" data-en="Exit gate"></div><div class="sd" data-es="15–20 ciclos · 1 repo ejecutada · INTT confirmado por escrito (Pedro)." data-en="15–20 cycles · 1 repo executed · INTT confirmed in writing (Pedro)."></div><div class="cad" data-es="4–6 meses" data-en="4–6 months"></div></div>
+        </div>
+
+        <div class="sdown right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+        <div class="sphase p1"><span data-es="Fase 1 · Primer capital externo" data-en="Phase 1 · First outside capital"></span><span class="amt">$500K–1M · preferente</span></div>
+        <div class="snake-row rev">
+          <div class="snode p1"><div class="sn" data-es="Paso 5" data-en="Step 5"></div><div class="st" data-es="Levantar preferente" data-en="Raise preferred"></div><div class="sd" data-es="Equity preferente, no deuda: 15% pref + 10% kicker. Llamado en 2 tramos: ½ ahora, ½ al 70% desplegado." data-en="Preferred equity, not debt: 15% pref + 10% kicker. Called in 2 tranches: ½ now, ½ at 70% deployed."></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></div>
+          <div class="snode p1"><div class="sn" data-es="Paso 6" data-en="Step 6"></div><div class="st" data-es="Tesorería única → emitir" data-en="Pooled account → emit"></div><div class="sd" data-es="Una cuenta: capital del inversionista + tuyo + cobranzas. Desplegar en préstamos, sin facilities." data-en="One account: investor + your capital + collections. Deploy into loans, no facilities."></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></div>
+          <div class="snode p1"><div class="sn" data-es="Paso 7" data-en="Step 7"></div><div class="st" data-es="Ritual mensual" data-en="Monthly ritual"></div><div class="sd" data-es="¿Demanda de préstamos? reinvertir proceeds. ¿Excedente sobre el buffer? apartar pref." data-en="Loan demand? reinvest proceeds. Excess over buffer? set aside pref."></div><div class="cad" data-es="pref: pago trimestral" data-en="pref: paid quarterly"></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></div>
+          <div class="snode p1"><div class="sn" data-es="Paso 8" data-en="Step 8"></div><div class="st" data-es="Retorno a founders" data-en="Founder distribution"></div><div class="sd" data-es="Cierre de año: el residual sobre pref + kicker se retira a Grupo Apex." data-en="Year-end: residual above pref + kicker distributed to Grupo Apex."></div><div class="cad" data-es="fin de año" data-en="year-end"></div></div>
+        </div>
+
+        <div class="sdown left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+        <div class="sphase p2"><span data-es="Fase 2 · Escala" data-en="Phase 2 · Scale-up"></span><span class="amt">$2–3M+ · múltiples inversionistas</span></div>
+        <div class="snake-row">
+          <div class="snode p2"><div class="sn" data-es="Paso 9" data-en="Step 9"></div><div class="st" data-es="Infraestructura real" data-en="Real infrastructure"></div><div class="sd" data-es="Recién aquí: borrowing base, draw certificates, cuenta de reserva de interés." data-en="Only now: borrowing base, draw certificates, interest reserve account."></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="snode p2"><div class="sn" data-es="Paso 10" data-en="Step 10"></div><div class="st" data-es="Trigger de escala" data-en="Scale trigger"></div><div class="sd" data-es="&gt;$150–200K/mes de originación consistente, o un 2º cheque institucional." data-en="&gt;$150–200K/mo consistent origination, or a 2nd institutional check."></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="snode p2"><div class="sn" data-es="Paso 11" data-en="Step 11"></div><div class="st" data-es="Preferente → deuda" data-en="Preferred → debt"></div><div class="sd" data-es="El preferente pasa a deuda warehouse real — solo con data de default. Te ganas el derecho." data-en="Preferred converts to real warehouse debt — only with default data. You earn the right."></div><div class="cad" data-es="12+ meses de data" data-en="12+ months data"></div></div>
+          <div class="sarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="snode p2"><div class="sn" data-es="Paso 12" data-en="Step 12"></div><div class="st" data-es="Plataforma de crédito" data-en="Credit platform"></div><div class="sd" data-es="Múltiples cheques, colateral segregado, deuda más barata — el mismo motor, escalado." data-en="Multiple checks, segregated collateral, cheaper debt — same engine, scaled."></div></div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <p data-es="Empezamos con lo mínimo — una cuenta y capital propio — y solo agregamos estructura (deuda, borrowing base) cuando el riesgo ya está medido. No pagamos por maquinaria que aún no necesitamos." data-en="We start minimal — one account, own capital — and only add structure (debt, borrowing base) once risk is measured. We don't pay for machinery we don't yet need."></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 08 · EQUIPO ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="08 · Equipo" data-en="08 · Team"></span></div>
+      <h2 class="display" data-es="Un equipo pequeño, construido alrededor del crédito" data-en="A small team, built around credit"></h2>
+      <p class="lede" data-es="Dos partners, un consejo asesor y cinco funciones. Dos contrataciones para arrancar; el resto se cubre internamente hasta escalar." data-en="Two partners, a board advisor and five functions. Two hires to launch; the rest covered internally until we scale."></p>
+      <div class="board-bar">
+        <span class="bb-tag" data-es="Partner · Consejo Asesor" data-en="Partner · Board Advisor"></span>
+        <span class="bb-name">Jhonny Maldonado</span>
+        <span class="bb-cred" data-es="50+ años en automotriz · MAG" data-en="50+ yrs automotive · MAG"></span>
+        <span class="bb-desc" data-es="Gobierno y guía estratégica. Red OEM/dealer. No opera el día a día." data-en="Governance and strategic guidance. OEM/dealer network. Not in day-to-day operations."></span>
+      </div>
+      <div class="team-connector"></div>
+      <div class="ceo-banner">
+        <span class="cb-tag">Partner</span>
+        <span class="cb-name">Diego Aparicio</span>
+        <span class="cb-cred">ex-J.P. Morgan</span>
+        <span class="cb-desc" data-es="Socio operador. Estrategia, capital (inversionistas), dealers y ancla el crédito al inicio. Toma las decisiones — no lleva los números." data-en="Operating partner. Strategy, capital (investors), dealers and anchors credit at launch. Makes the calls — doesn't keep the books."></span>
+      </div>
+      <div class="team-connector"></div>
+      <div class="team-pl" data-es="Funciones — en orden de prioridad de contratación" data-en="Functions — in hiring-priority order"></div>
+      <div class="team-grid">
+        <div class="role">
+          <div class="rbar" style="background:#0B3D2A"></div>
+          <div class="rtop"><span class="rprio" style="background:#0B3D2A">P1</span><span class="chip now" data-es="Mes 1" data-en="Month 1"></span></div>
+          <svg class="ricon" style="color:#0B3D2A" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+          <h4 data-es="Director de Finanzas (CFO)" data-en="Finance Director (CFO)"></h4>
+          <p data-es="Modelo, forecast, contabilidad, costos y pagos a inversionistas. Responde por los números." data-en="Model, forecast, accounting, costs and investor payments. Owns the numbers."></p>
+          <div class="rcost" data-es="$2.0K / mes" data-en="$2.0K / mo"></div>
+        </div>
+        <div class="role">
+          <div class="rbar" style="background:#C9982F"></div>
+          <div class="rtop"><span class="rprio" style="background:#C9982F">P2</span><span class="chip now" data-es="Mes 1" data-en="Month 1"></span></div>
+          <svg class="ricon" style="color:#C9982F" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M9 13h.01M15 9h.01M15 13h.01"/></svg>
+          <h4 data-es="Comercial / Dealers" data-en="Commercial / Dealers"></h4>
+          <p data-es="Cierra los concesionarios aliados y trae el volumen de originación." data-en="Closes partner dealerships and drives origination volume."></p>
+          <div class="rcost" data-es="$1.0K / mes + comisión" data-en="$1.0K / mo + commission"></div>
+        </div>
+        <div class="role">
+          <div class="rbar" style="background:#0F7A4D"></div>
+          <div class="rtop"><span class="rprio" style="background:#0F7A4D">P3</span><span class="chip later" data-es="Escala" data-en="Scale"></span></div>
+          <svg class="ricon" style="color:#0F7A4D" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          <h4 data-es="Crédito y Riesgo" data-en="Credit & Risk"></h4>
+          <p data-es="Decide qué créditos se aprueban y bajo qué condiciones. El corazón del negocio." data-en="Decides which loans get approved and on what terms. The heart of the business."></p>
+          <div class="rcost" data-es="$1.8K / mes" data-en="$1.8K / mo"></div>
+          <div class="rcover" data-es="Mes 1: lo ancla <b>Diego (Partner)</b>" data-en="Month 1: anchored by <b>Diego (Partner)</b>"></div>
+        </div>
+        <div class="role">
+          <div class="rbar" style="background:#4A6572"></div>
+          <div class="rtop"><span class="rprio" style="background:#4A6572">P4</span><span class="chip later" data-es="Escala" data-en="Scale"></span></div>
+          <svg class="ricon" style="color:#4A6572" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/><path d="M12 8v4l3 2"/></svg>
+          <h4 data-es="Cobranza y Recuperación" data-en="Collections & Recovery"></h4>
+          <p data-es="Cobra las cuotas y ejecuta la recuperación del vehículo. Hace real la garantía." data-en="Collects installments and executes vehicle repossession. Makes the collateral real."></p>
+          <div class="rcost" data-es="$0.9K / mes" data-en="$0.9K / mo"></div>
+          <div class="rcover" data-es="Mes 1: <b>Comercial + Partner</b>" data-en="Month 1: <b>Commercial + Partner</b>"></div>
+        </div>
+        <div class="role">
+          <div class="rbar" style="background:#6E7B73"></div>
+          <div class="rtop"><span class="rprio" style="background:#6E7B73">P5</span><span class="chip later" data-es="Escala" data-en="Scale"></span></div>
+          <svg class="ricon" style="color:#6E7B73" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 4h6v2H9zM7 6h10a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/><path d="M9 11h6M9 15h4"/></svg>
+          <h4 data-es="Operaciones y Contratos" data-en="Operations & Contracts"></h4>
+          <p data-es="Desembolso, registro INTT, reserva de dominio y liberación de título." data-en="Disbursement, INTT filing, title retention and release."></p>
+          <div class="rcost" data-es="$0.7K / mes" data-en="$0.7K / mo"></div>
+          <div class="rcover" data-es="Mes 1: lo cubre <b>Finanzas (CFO)</b>" data-en="Month 1: covered by <b>Finance (CFO)</b>"></div>
+        </div>
+      </div>
+      <div class="team-cost">
+        <div class="tc-item"><span class="tc-k" data-es="Arranque · 2 contrataciones" data-en="Launch · 2 hires"></span><span class="tc-v">$3.0K<small> / mes</small></span></div>
+        <div class="tc-item"><span class="tc-k" data-es="Equipo completo · 5 roles" data-en="Full team · 5 roles"></span><span class="tc-v">$6.4K<small> / mes</small></span></div>
+        <div class="tc-item"><span class="tc-k" data-es="Nómina cargada · año" data-en="Loaded payroll · year"></span><span class="tc-v">~$96K</span></div>
+      </div>
+      <div class="tnote" data-es="* Salarios base estimados, mercado Venezuela 2026. Partners no incluidos. Comercial suma comisión por volumen. Cargado ≈ +25% (prestaciones, IVSS). Legal (Rengel), impuestos y agentes de campo, tercerizados." data-en="* Estimated base salaries, Venezuela market 2026. Partners excluded. Commercial adds volume commission. Loaded ≈ +25% (benefits, social security). Legal (Rengel), tax and field agents, outsourced."></div>
+    </div>
+  </section>
+
+  <!-- ======== SLIDE 09 · HOJA DE RUTA ======== -->
+  <section class="slide paper" data-bg="paper">
+    <div class="slide-inner">
+      <div class="eyebrow"><span data-es="09 · Hoja de Ruta" data-en="09 · Roadmap"></span></div>
+      <h2 class="display" data-es="AVANZA es la Fase 1 de algo más grande" data-en="AVANZA is Phase 1 of something bigger"></h2>
+      <p class="lede" data-es="Un plan por fases, en orden. Cada fase genera la caja y la credibilidad que habilitan la siguiente — no dispersión, secuencia." data-en="A phased plan, in order. Each phase generates the cash and credibility that enable the next — not scatter, sequence."></p>
+
+      <div class="rmap">
+        <div class="rmap-parent"><div class="pnode"><b>Grupo Apex</b><small data-es="La plataforma" data-en="The platform"></small></div></div>
+        <div class="rmap-connect"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+        <div class="rmap-row">
+          <div class="pcard now">
+            <div class="ph"><span data-es="Fase 1" data-en="Phase 1"></span><span class="ptime" data-es="Ahora" data-en="Now"></span></div>
+            <h4>AVANZA</h4>
+            <p data-es="Financiamiento vehicular en Venezuela. El motor de caja que financia todo lo demás." data-en="Vehicle financing in Venezuela. The cash engine that funds everything else."></p>
+          </div>
+          <div class="rmap-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="pcard next">
+            <div class="ph"><span data-es="Fase 2" data-en="Phase 2"></span><span class="ptime" data-es="Siguiente" data-en="Next"></span></div>
+            <h4 data-es="Distribución Hero" data-en="Hero Distribution"></h4>
+            <p data-es="Motos Hero (2R) en Venezuela + distribución de repuestos en Centroamérica." data-en="Hero motorcycles (2W) in Venezuela + spare-parts distribution across Central America."></p>
+          </div>
+          <div class="rmap-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="pcard later">
+            <div class="ph"><span data-es="Fase 3" data-en="Phase 3"></span><span class="ptime" data-es="Después" data-en="Later"></span></div>
+            <h4 data-es="Expansión" data-en="Expansion"></h4>
+            <div class="pitem" data-es="AVANZA → insumos médicos, aires acondicionados y otros bienes de consumo." data-en="AVANZA → medical supplies, air conditioners and other consumer goods."></div>
+            <div class="pitem" data-es="Distribución → International, Tata, Mahindra y otras marcas chinas." data-en="Distribution → International, Tata, Mahindra and other Chinese brands."></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg>
+        <p data-es="Empezamos por AVANZA a propósito: el financiamiento genera la caja y la data de crédito que hacen posible — y más baratas — todas las fases siguientes. Orden, no dispersión." data-en="We start with AVANZA on purpose: financing generates the cash and credit data that make every later phase possible — and cheaper. Order, not scatter."></p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- chrome -->
+<div class="counter"><span id="cur">01</span> / <span id="tot">03</span></div>
+<div class="dots" id="dots"></div>
+<div class="nav">
+  <button id="prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button id="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+</div>
+
+<script>
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var idx = 0, lang = 'es';
+
+  // build dots
+  var dotsWrap = document.getElementById('dots');
+  slides.forEach(function(s,i){
+    var d = document.createElement('i');
+    d.addEventListener('click', function(){ go(i); });
+    dotsWrap.appendChild(d);
+  });
+  document.getElementById('tot').textContent = String(slides.length).padStart(2,'0');
+
+  function applyLang(){
+    document.querySelectorAll('[data-es]').forEach(function(el){
+      var val = el.getAttribute('data-'+lang);
+      if(val !== null){
+        if(val.indexOf('<') !== -1) el.innerHTML = val;
+        else el.textContent = val;
+      }
+    });
+    document.documentElement.lang = lang;
+    document.getElementById('btn-es').classList.toggle('on', lang==='es');
+    document.getElementById('btn-en').classList.toggle('on', lang==='en');
+  }
+  function setLang(l){ lang = l; applyLang(); }
+
+  function go(n){
+    idx = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+    Array.prototype.forEach.call(dotsWrap.children, function(d,i){ d.classList.toggle('on', i===idx); });
+    Array.prototype.forEach.call(document.querySelectorAll('#agenda [data-nav]'), function(el){ el.classList.toggle('active', parseInt(el.getAttribute('data-nav'),10)===idx); });
+    document.getElementById('cur').textContent = String(idx+1).padStart(2,'0');
+    document.getElementById('prev').disabled = idx===0;
+    document.getElementById('next').disabled = idx===slides.length-1;
+    // bg-aware chrome
+    var bg = slides[idx].getAttribute('data-bg');
+    document.body.classList.toggle('on-paper', bg==='paper');
+    document.body.classList.toggle('on-dark', bg==='dark');
+    slides[idx].scrollTop = 0;
+  }
+
+  document.getElementById('next').addEventListener('click', function(){ go(idx+1); });
+  document.getElementById('prev').addEventListener('click', function(){ go(idx-1); });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown'){ e.preventDefault(); go(idx+1); }
+    else if(e.key==='ArrowLeft' || e.key==='PageUp'){ e.preventDefault(); go(idx-1); }
+    else if(e.key==='Home'){ go(0); }
+    else if(e.key==='End'){ go(slides.length-1); }
+  });
+
+  // swipe (mobile)
+  var sx=null;
+  document.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(sx===null) return;
+    var dx = e.changedTouches[0].clientX - sx;
+    if(Math.abs(dx) > 55){ go(idx + (dx<0 ? 1 : -1)); }
+    sx = null;
+  }, {passive:true});
+
+  applyLang();
+  go(0);
+</script>
+</body>
+</html>
